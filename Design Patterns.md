@@ -4,6 +4,7 @@
 ## Proxy Design Pattern
 Sources
 https://sourcemaking.com/design_patterns/proxy
+
 https://en.wikipedia.org/wiki/Proxy_pattern#Remote_proxy
 
 Intent
@@ -38,6 +39,7 @@ A check can be used in place of cash for making purchases and ultimately control
 # Iterator Design Pattern
 
 https://cplusplus.com/reference/iterator/
+
 https://en.wikipedia.org/wiki/Iterator_pattern
 
 ## What is iterator of a data structure?
