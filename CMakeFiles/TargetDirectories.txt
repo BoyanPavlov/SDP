@@ -1,8 +1,0 @@
-C:/Users/boian/source/Data_structures_and_algorithms/SDP/CMakeFiles/Experimental.dir
-C:/Users/boian/source/Data_structures_and_algorithms/SDP/CMakeFiles/Nightly.dir
-C:/Users/boian/source/Data_structures_and_algorithms/SDP/CMakeFiles/Continuous.dir
-C:/Users/boian/source/Data_structures_and_algorithms/SDP/CMakeFiles/NightlyMemoryCheck.dir
-C:/Users/boian/source/Data_structures_and_algorithms/SDP/CMakeFiles/Stack_proj.dir
-C:/Users/boian/source/Data_structures_and_algorithms/SDP/CMakeFiles/RUN_TESTS.dir
-C:/Users/boian/source/Data_structures_and_algorithms/SDP/CMakeFiles/ALL_BUILD.dir
-C:/Users/boian/source/Data_structures_and_algorithms/SDP/CMakeFiles/ZERO_CHECK.dir
