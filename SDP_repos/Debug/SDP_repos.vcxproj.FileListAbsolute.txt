@@ -1,2 +1,0 @@
-C:\Users\boian\source\Data_structures_and_algorithms\SDP\SDP_repos\Debug\Stack_proj.exe
-C:\Users\boian\source\Data_structures_and_algorithms\SDP\SDP_repos\Debug\Stack_proj.pdb
