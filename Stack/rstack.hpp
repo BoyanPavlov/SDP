@@ -38,16 +38,14 @@ public:
     DataType pop();
 };
 
-#endif // _RESIZING_STACK_
-
 template <class DataType>
-bool ResizingStack<class DataType>::full() const
+bool ResizingStack<DataType>::full() const
 {
     return top == capacity - 1;
 }
 
 template <class DataType>
-void ResizingStack<class DataType>::resize()
+void ResizingStack<DataType>::resize()
 {
     size_t newCapacity = 2 * capacity;
     std::clog << "Resizing the stack to" << newCapacity << std::endl;
@@ -62,7 +60,7 @@ void ResizingStack<class DataType>::resize()
 }
 
 template <class DataType>
-void ResizingStack<class DataType>::copyData(ResizingStack<class DataType> const &other)
+void ResizingStack<DataType>::copyData(ResizingStack<DataType> const &other)
 {
     stack = new DataType[capacity];
     for (size_t i = 0; i <= top; i++)
@@ -72,27 +70,27 @@ void ResizingStack<class DataType>::copyData(ResizingStack<class DataType> const
 }
 
 template <class DataType>
-ResizingStack<class DataType>::ResizingStack()
+ResizingStack<DataType>::ResizingStack()
     : capacity(INIT_STACK), top(EMPTY_STACK)
 {
-    stack = new T[capacity];
+    stack = new DataType[capacity];
 }
 
 template <class DataType>
-ResizingStack<class DataType>::~ResizingStack()
+ResizingStack<DataType>::~ResizingStack()
 {
     delete[] stack;
 }
 
 template <class DataType> // защо не пишем типове пред всеки ResizingStack тук ?
-ResizingStack<class DataType>::ResizingStack(ResizingStack const &other)
+ResizingStack<DataType>::ResizingStack(ResizingStack const &other)
     : top(other.top), capacity(other.capacity)
 {
     copyData(other);
 }
 
 template <class DataType>
-ResizingStack<class DataType> &ResizingStack<class DataType>::operator=(ResizingStack const &other)
+ResizingStack<DataType> &ResizingStack<DataType>::operator=(ResizingStack const &other)
 {
     if (this != &other)
     {
@@ -105,13 +103,13 @@ ResizingStack<class DataType> &ResizingStack<class DataType>::operator=(Resizing
 }
 
 template <class DataType>
-bool ResizingStack<class DataType>::empty() const
+bool ResizingStack<DataType>::empty() const
 {
     return top == EMPTY_STACK;
 }
 
 template <class DataType>
-void ResizingStack<class DataType>::push(DataType const &element)
+void ResizingStack<DataType>::push(DataType const &element)
 {
     if (full())
         resize();
@@ -119,7 +117,7 @@ void ResizingStack<class DataType>::push(DataType const &element)
 }
 
 template <class DataType>
-DataType const &ResizingStack<class DataType>::peek() const
+DataType const &ResizingStack<DataType>::peek() const
 {
     if (empty())
     {
@@ -130,7 +128,7 @@ DataType const &ResizingStack<class DataType>::peek() const
 }
 
 template <class DataType>
-DataType ResizingStack<class DataType>::pop()
+DataType ResizingStack<DataType>::pop()
 {
     if (empty())
     {
@@ -138,3 +136,5 @@ DataType ResizingStack<class DataType>::pop()
     }
     return stack[top--];
 }
+
+#endif // _RESIZING_STACK_

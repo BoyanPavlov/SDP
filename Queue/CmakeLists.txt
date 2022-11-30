@@ -1,0 +1,24 @@
+cmake_minimum_required(VERSION 3.0.0)
+project(Queue_proj VERSION 0.1.0)
+
+include(CTest)
+enable_testing()
+
+set(CPACK_PROJECT_NAME ${PROJECT_NAME})
+set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
+
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set(SOURCES
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/lqueue.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/squeue.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/queue_tests.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/queue_utils.hpp
+)
+
+add_executable(Queue_proj ${SOURCES})
+
+target_include_directories(Queue_proj PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)

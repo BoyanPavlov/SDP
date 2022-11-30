@@ -1,0 +1,20 @@
+﻿  main.cpp
+C:\Users\boian\source\Data_structures_and_algorithms\SDP\Stack\main.cpp(482,23): warning C4018: '<=': signed/unsigned mismatch
+C:\Users\boian\source\Data_structures_and_algorithms\SDP\Stack\rstack.hpp(126,5): warning C4018: '<': signed/unsigned mismatch
+C:\Users\boian\source\Data_structures_and_algorithms\SDP\Stack\rstack.hpp(121): message : while compiling class template member function 'const DataType &ResizingStack<DataType>::peek(void) const'
+          with
+          [
+              DataType=int
+          ]
+C:\Users\boian\source\Data_structures_and_algorithms\SDP\Stack\main.cpp(327): message : see reference to function template instantiation 'const DataType &ResizingStack<DataType>::peek(void) const' being compiled
+          with
+          [
+              DataType=int
+          ]
+C:\Users\boian\source\Data_structures_and_algorithms\SDP\Stack\main.cpp(255): message : see reference to class template instantiation 'ResizingStack<int>' being compiled
+C:\Users\boian\source\Data_structures_and_algorithms\SDP\Stack\rstack.hpp(53,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\boian\source\Data_structures_and_algorithms\SDP\Stack\rstack.hpp(49): message : while compiling class template member function 'void ResizingStack<int>::resize(void)'
+C:\Users\boian\source\Data_structures_and_algorithms\SDP\Stack\rstack.hpp(115): message : see reference to function template instantiation 'void ResizingStack<int>::resize(void)' being compiled
+C:\Users\boian\source\Data_structures_and_algorithms\SDP\Stack\rstack.hpp(74): message : while compiling class template member function 'ResizingStack<int>::ResizingStack(void)'
+C:\Users\boian\source\Data_structures_and_algorithms\SDP\Stack\main.cpp(255): message : see reference to function template instantiation 'ResizingStack<int>::ResizingStack(void)' being compiled
+  SDP_repos.vcxproj -> C:\Users\boian\source\Data_structures_and_algorithms\SDP\SDP_repos\Debug\Stack_proj.exe

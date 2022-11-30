@@ -1,18 +1,18 @@
 #ifndef _LINKED_STACK
 #define _LINKED_STACK
 
-#include <abstractStack.hpp>
+#include "abstractStack.hpp"
 template <class DataType>
-class LinkedStack : public AbstractStack
+struct StackElement
+{
+    DataType data;
+    StackElement *next;
+};
+
+template <class DataType>
+class LinkedStack : public AbstractStack<DataType>
 {
 private:
-    template <class DataType>
-    struct StackElement
-    {
-        DataType data;
-        StackElement<DataType> *next;
-    };
-
     // pointer to the top of the stack
     StackElement<DataType> *top;
 
@@ -50,6 +50,8 @@ public:
     // returns the top element of the stack
     DataType const &peek() const;
 
+    DataType &peek();
+
     // safely finding the top element of the stack and indicating for success
     bool peek(DataType &) const;
 
@@ -70,22 +72,24 @@ public:
 };
 
 template <class DataType>
-void LinkedStack<class DataType>::copyStack(LinkedStack<DataType> const &other)
+void LinkedStack<DataType>::copyStack(LinkedStack<DataType> const &other)
 {
     if (other.top != nullptr)
     {
-        StackElement<DataType> *lastAdded = top = new StackElement<DataType>{other.data, nullptr};
+        top = new StackElement<DataType>{other.top->data, nullptr};
+        StackElement<DataType> *lastAdded = top;
         StackElement<DataType> *nextToCopy = other.top->next;
-        while (*nextToCopy)
+        while (nextToCopy)
         {
-            lastAdded = lastAdded->next = new StackElement<DataType>{nextToCopy->data, nullptr};
+            lastAdded->next = new StackElement<DataType>{nextToCopy->data, nullptr};
+            lastAdded = lastAdded->next;
             nextToCopy = nextToCopy->next;
         }
     }
 }
 
 template <class DataType>
-void LinkedStack<class DataType>::erase()
+void LinkedStack<DataType>::erase()
 {
     while (!empty())
     {
@@ -94,27 +98,27 @@ void LinkedStack<class DataType>::erase()
 }
 
 template <class DataType>
-LinkedStack<class DataType>::LinkedStack()
+LinkedStack<DataType>::LinkedStack()
     : top(nullptr)
 {
 }
 
 template <class DataType>
-LinkedStack<class DataType>::~LinkedStack()
+LinkedStack<DataType>::~LinkedStack()
 {
     erase();
 }
 
 template <class DataType>
-LinkedStack<class DataType>::LinkedStack(LinkedStack const &other)
+LinkedStack<DataType>::LinkedStack(LinkedStack const &other)
     : top(nullptr)
 {
-    std::clog << "Coping a stack" << std::endl;
+    // std::clog << "Coping a stack" << std::endl;
     copyStack(other);
 }
 
 template <class DataType>
-LinkedStack<class DataType> &LinkedStack<class DataType>::operator=(LinkedStack const &)
+LinkedStack<DataType> &LinkedStack<DataType>::operator=(LinkedStack const &other)
 {
     std::clog << "Assigning the stack" << std::endl;
     if (this != &other)
@@ -126,17 +130,17 @@ LinkedStack<class DataType> &LinkedStack<class DataType>::operator=(LinkedStack 
 }
 
 template <class DataType>
-LinkedStack<class DataType>::LinkedStack<class DataType>(LinkedStack &&rhs)
+LinkedStack<DataType>::LinkedStack(LinkedStack &&other)
     : top(other.top)
 {
-    std::clog << "Конструктор за преместване на LinkedStack" << std::endl;
+    /*std::clog << "Конструктор за преместване на LinkedStack" << std::endl;*/
     other.top = nullptr;
 }
 
 template <class DataType>
-LinkedStack<class DataType> &LinkedStack<class DataType>::operator=(LinkedStack &&)
+LinkedStack<DataType> &LinkedStack<DataType>::operator=(LinkedStack &&other)
 {
-    std::cout << "Operation for moving the LinkedStack" << std::endl;
+    // std::cout << "Operation for moving the LinkedStack" << std::endl;
     if (this != &other)
     {
         erase();
@@ -147,19 +151,19 @@ LinkedStack<class DataType> &LinkedStack<class DataType>::operator=(LinkedStack 
 }
 
 template <class DataType>
-bool LinkedStack<class DataType>::empty() const
+bool LinkedStack<DataType>::empty() const
 {
     return top == nullptr;
 }
 
 template <class DataType>
-void LinkedStack<class DataType>::push(DataType const &element)
+void LinkedStack<DataType>::push(DataType const &element)
 {
     top = new StackElement<DataType>{element, top};
 }
 
 template <class DataType>
-DataType const &LinkedStack<class DataType>::peek() const
+DataType const &LinkedStack<DataType>::peek() const
 {
     if (empty())
         throw std::runtime_error("An attemt to peek in emtpy stack");
@@ -167,7 +171,15 @@ DataType const &LinkedStack<class DataType>::peek() const
 }
 
 template <class DataType>
-bool LinkedStack<class DataType>::peek(DataType &result) const
+DataType &LinkedStack<DataType>::peek()
+{
+    if (empty())
+        throw std::runtime_error("An attempt to peek in emtpy stack");
+    return top->data;
+}
+
+template <class DataType>
+bool LinkedStack<DataType>::peek(DataType &result) const
 {
     if (empty())
         return false;
@@ -176,7 +188,7 @@ bool LinkedStack<class DataType>::peek(DataType &result) const
 }
 
 template <class DataType>
-DataType LinkedStack<class DataType>::pop()
+DataType LinkedStack<DataType>::pop()
 {
     if (empty())
     {
@@ -191,7 +203,7 @@ DataType LinkedStack<class DataType>::pop()
 }
 
 template <class DataType>
-DataType LinkedStack<class DataType>::pop(bool &success)
+DataType LinkedStack<DataType>::pop(bool &success)
 {
     if (empty())
     {

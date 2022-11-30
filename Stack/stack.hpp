@@ -10,10 +10,10 @@
 
 #include "abstractStack.hpp"
 template <class DataType>
-class Stack : public AbstractStack
+class Stack : public AbstractStack<DataType>
 {
 private:
-    const int MAX_SIZE = 100;
+    static const int MAX_SIZE = 100;
     static const int EMPTY_STACK = -1;
 
     /// the stack - used array as a base
@@ -38,6 +38,7 @@ public:
 
     /// exclude the last added element
     DataType pop();
+
 };
 
 template <class DataType>
@@ -47,7 +48,7 @@ Stack<DataType>::Stack()
 }
 
 template <class DataType>
-bool Stack<class DataType>::empty() const
+bool Stack<DataType>::empty() const
 {
     return top == EMPTY_STACK;
 }
@@ -69,7 +70,7 @@ DataType const &Stack<DataType>::peek() const
     {
         throw std::runtime_error("An attempt to peek in empty stack");
     }
-        
+
     assert(top >= 0 && top < MAX_SIZE);
     return stack[top];
 }
