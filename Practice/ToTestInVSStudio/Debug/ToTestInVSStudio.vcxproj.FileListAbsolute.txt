@@ -1,0 +1,2 @@
+C:\Users\boian\source\Data_structures_and_algorithms\SDP\Practice\ToTestInVSStudio\Debug\ToTestInVSStudio.exe
+C:\Users\boian\source\Data_structures_and_algorithms\SDP\Practice\ToTestInVSStudio\Debug\ToTestInVSStudio.pdb

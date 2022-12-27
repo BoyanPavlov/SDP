@@ -5,9 +5,9 @@
 #include <cassert>
 #include <stdexcept>
 
-// curiuisly recurring template pattern
+// curiously recurring template pattern
 // CRTP
-template <class DataType, class ConcretePosition /*extends Possition<DataType>*/>
+template <class DataType, class ConcretePosition /*extends Position<DataType>*/>
 class Position
 {
     virtual bool valid() const = 0;
@@ -35,6 +35,7 @@ class Position
     }
 
     virtual bool operator==(Position const &pos) const = 0;
+
     bool operator!=(Position const &pos)
     {
         return !(*this == pos);
@@ -64,6 +65,7 @@ public:
     {
         return !begin().valid();
     }
+
     virtual bool insertFirst(DataType const &x)
     {
         insertBefore(x, begin());
@@ -72,6 +74,7 @@ public:
     {
         insertAfter(x, end());
     }
+    
     virtual bool insertBefore(DataType const &, OtherType const &pos) = 0;
     virtual bool insertAt(DataType const &, OtherType const &pos) = 0;
     virtual bool insertAfter(DataType const &, OtherType const &pos) = 0;
@@ -117,7 +120,6 @@ public:
     virtual OtherType end() const = 0;
 
     virtual OtherType last() const = 0;
-
 
     void append(AbstractList const &other)
     {

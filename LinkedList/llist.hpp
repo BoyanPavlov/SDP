@@ -67,6 +67,11 @@ public:
         // We are not checkng if pos is an obj from Iterator
         return ptr == ((LinkedListIterator const &)pos).ptr;
     }
+
+    LinkedListIterator &assign(LinkedListIterator const &pos)
+    {
+        return *this = pos; 
+    }
 };
 
 template <class DataType>
