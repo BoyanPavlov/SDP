@@ -15,7 +15,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\queue_week\task3.cpp">
+    <ClInclude Include="..\lists_week\linkedListUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\lists_week\reorderList1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

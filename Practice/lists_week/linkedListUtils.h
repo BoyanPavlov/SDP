@@ -99,4 +99,46 @@ void reverseLinkedList(LinkedListNode<T> *&ll)
     }
     ll = prev;
 }
+
+template <class T>
+LinkedListNode<T> *findMiddle(LinkedListNode<T> *ll)
+{
+    int count = 0;
+    LinkedListNode<T> *mid = ll;
+    while (ll)
+    {
+        if (count % 2 == 1)
+        {
+            mid = mid->next;
+        }
+        count++;
+        ll = ll->next;
+    }
+    return mid;
+}
+
+template <class T>
+LinkedListNode<T> *mergeLists(LinkedListNode<T> *first, LinkedListNode<T> *second)
+{
+    if (!first)
+    {
+        return second;
+    }
+
+    if (!second)
+    {
+        return first;
+    }
+
+    LinkedListNode<T> *result = first;
+    LinkedListNode<T> *iter = first;
+
+    while (iter->next)
+    {
+        iter = iter->next;
+    }
+    iter->next = second;
+    return result;
+}
+
 #endif // _LINKED_LIST_UTILS_
