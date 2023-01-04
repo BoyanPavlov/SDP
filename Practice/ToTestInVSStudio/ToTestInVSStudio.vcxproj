@@ -19,10 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\lists_week\linkedListUtils.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\lists_week\reorderList1.cpp" />
+    <ClCompile Include="..\doble_linked_list_week\polish_and_product.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

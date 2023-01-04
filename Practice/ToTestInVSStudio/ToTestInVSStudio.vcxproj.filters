@@ -15,12 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\lists_week\linkedListUtils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\lists_week\reorderList1.cpp">
+    <ClCompile Include="..\doble_linked_list_week\polish_and_product.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
