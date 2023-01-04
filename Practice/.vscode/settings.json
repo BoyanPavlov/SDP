@@ -1,8 +1,0 @@
-{
-    "files.associations": {
-        "stack": "cpp",
-        "queue": "cpp",
-        "initializer_list": "cpp",
-        "iterator": "cpp"
-    }
-}
