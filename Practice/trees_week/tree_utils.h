@@ -87,4 +87,29 @@ void printTree(const Tree<T> *node)
     printBT("", node, false);
 }
 
+template <class T>
+bool isBinTreeSorted(Tree<T> *node)
+{
+    if (!node)
+    {
+        return true;
+    }
+    if (node->left)
+    {
+        if (node->left->data > node->data)
+        {
+            return false;
+        }
+    }
+    if (node->right)
+    {
+        if (node->right->data < node->data)
+        {
+            return false;
+        }
+    }
+
+    return isBinTreeSorted(node->left) && isBinTreeSorted(node->right);
+}
+
 #endif // _TREE_UTILS_
