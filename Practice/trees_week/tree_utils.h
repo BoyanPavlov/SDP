@@ -112,4 +112,14 @@ bool isBinTreeSorted(Tree<T> *node)
     return isBinTreeSorted(node->left) && isBinTreeSorted(node->right);
 }
 
+template <class T>
+Tree<T> *clone(const Tree<T> *t)
+{
+    if (!t)
+        return nullptr;
+
+    return new Tree<T>(t->data, clone(t->left), clone(t->right));
+}
+
+
 #endif // _TREE_UTILS_
