@@ -37,14 +37,7 @@ public:
             : currentNode(arg) {}
 
     public:
-        Iterator(const Iterator &) = delete;
-        Iterator &operator=(const Iterator &) = delete;
-
-        static Iterator &instance(){
-            static Iterator obj}
-
-        Iterator &
-        operator++()
+        Iterator &operator++()
         {
             if (currentNode == nullptr)
             {

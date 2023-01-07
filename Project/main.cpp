@@ -65,26 +65,25 @@ vector<connection> readConnections()
     return connections;
 }
 
-// template <class T>
-// SkipList<T> *createSkipList(vector<string> &towns, vector<connection> &connections)
-// {
-//     SkipList<T> *list = new SkipList<T>;
+template <class T>
+SkipList<T> *createSkipList(vector<string> &towns, vector<connection> &connections)
+{
+    SkipList<T> *list = new SkipList<T>;
 
-//     for (int i = 0; i < towns.size(); i++)
-//     {
-//         list->pushBack(towns[i]);
-//     }
+    for (int i = 0; i < towns.size(); i++)
+    {
+        list->pushBack(towns[i]);
+    }
 
-//     for (size_t i = 0; i < towns.size(); i++)
-//     {
-//         for (size_t j = 0; j < connections.size(); j++)
-//         {
-//             list.iterl
-//         }
-//     }
+    for (size_t i = 0; i < towns.size(); i++)
+    {
+        for (size_t j = 0; j < connections.size(); j++)
+        {
+        }
+    }
 
-//     return list;
-// }
+    return list;
+}
 
 int main()
 {
