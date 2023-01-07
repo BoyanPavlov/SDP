@@ -1,6 +1,7 @@
 #ifndef _SKIP_LIST_HPP_
 #define _SKIP_LIST_HPP_
 
+#include <iostream>
 // Some of the code below is taken from
 // github (Link lists) and modified as skipList
 
@@ -13,12 +14,12 @@ private:
         T data;
         SkipListNode *next;
         SkipListNode *jumpNode;
-        SkipListNode(const T &elem, SkipListNode<T> *n, SkipListNode<T> *jN = nullptr)
+        SkipListNode(const T &elem, SkipListNode *n, SkipListNode *jN = nullptr)
             : data(elem), next(n), jumpNode(jN) {}
     };
 
     void free();
-    void copy(const SkipListNode<T> &);
+    void copy(const SkipList<T> &);
 
     SkipListNode *head;
     SkipListNode *tail;
@@ -36,7 +37,14 @@ public:
             : currentNode(arg) {}
 
     public:
-        Iterator &operator++()
+        Iterator(const Iterator &) = delete;
+        Iterator &operator=(const Iterator &) = delete;
+
+        static Iterator &instance(){
+            static Iterator obj}
+
+        Iterator &
+        operator++()
         {
             if (currentNode == nullptr)
             {
@@ -76,6 +84,12 @@ public:
         const Iterator next() const
         {
             return Iterator(currentNode->jumpNode);
+        }
+
+        // I think this is NOT okay ... idk
+        void addJumpingNode(Iterator *&jNode)
+        {
+            this->currentNode->next = jNode->currentNode;
         }
 
         friend class SkipList;
@@ -88,11 +102,11 @@ public:
 
         // constr in private so - if we make friends with SkipList
         // - only SkipList can call the iterator
-        Iterator(SkipListNode *arg)
+        ConstIterator(SkipListNode *arg)
             : currentNode(arg) {}
 
     public:
-        Iterator &operator++()
+        ConstIterator &operator++()
         {
             if (currentNode == nullptr)
             {
@@ -102,7 +116,7 @@ public:
             return *this;
         }
 
-        Iterator operator++(int)
+        ConstIterator operator++(int)
         {
             Iterator temp = *this;
             ++(*this);
@@ -119,19 +133,19 @@ public:
             return currentNode->data;
         }
 
-        bool operator==(const Iterator &other) const
+        bool operator==(const ConstIterator &other) const
         {
             return other.currentNode == currentNode;
         }
 
-        bool operator!=(const Iterator &other) const
+        bool operator!=(const ConstIterator &other) const
         {
             return !(*this == other);
         }
 
-        const Iterator next() const
+        const ConstIterator next() const
         {
-            return Iterator(currentNode->jumpNode);
+            return ConstIterator(currentNode->jumpNode);
         }
 
         friend class SkipList;
@@ -210,7 +224,7 @@ void SkipList<T>::free()
 }
 
 template <class T>
-void SkipListNode<T>::copy(const SkipListNode<T> &other)
+void SkipList<T>::copy(const SkipList<T> &other)
 {
     // free();
     //  we are expecting that our list is empty
