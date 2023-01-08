@@ -3,6 +3,18 @@
         "iostream": "cpp",
         "vector": "cpp",
         "xstring": "cpp",
-        "stdexcept": "cpp"
+        "stdexcept": "cpp",
+        "algorithm": "cpp",
+        "execution": "cpp",
+        "iterator": "cpp",
+        "mutex": "cpp",
+        "streambuf": "cpp",
+        "type_traits": "cpp",
+        "xiosbase": "cpp",
+        "xlocale": "cpp",
+        "xlocnum": "cpp",
+        "xmemory": "cpp",
+        "xtr1common": "cpp",
+        "xutility": "cpp"
     }
 }

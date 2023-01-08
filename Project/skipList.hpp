@@ -116,6 +116,8 @@ public:
     bool empty() const;
     size_t size() const;
 
+    void printList();
+
     ~SkipList();
 
     // bool resetIterator()
@@ -133,7 +135,7 @@ public:
         return it;
     }
 
-    const Iterator& getIterator()const
+    const Iterator &getIterator() const
     {
         return it;
     }
@@ -154,7 +156,9 @@ private:
 
 template <class T>
 SkipList<T>::SkipList()
-    : head{nullptr}, tail{nullptr}, sizeOfList{0}, it(head) {}
+    : head{nullptr}, tail{nullptr}, sizeOfList{0}, it(head)
+{
+}
 
 template <class T>
 void SkipList<T>::free()
@@ -378,6 +382,19 @@ template <class T>
 SkipList<T>::~SkipList()
 {
     free();
+}
+
+template <class T>
+void SkipList<T>::printList()
+{
+    SkipListNode<T> *iter = head;
+    std::cout << "\nList: ";
+    while (iter)
+    {
+        std::cout << iter->data << " ";
+        iter = iter->next;
+    }
+    std::cout << '\n';
 }
 
 #endif //_SKIP_LIST_HPP_

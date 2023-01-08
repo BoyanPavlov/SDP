@@ -26,7 +26,7 @@ bool isStringValid(const string &input)
 vector<string> getTowns(size_t numberOfTowns)
 {
     vector<string> towns;
-    towns.resize(9);
+    towns.resize(numberOfTowns);
 
     cout << "Please entere the sequens of towns \n: ";
     bool notValidTown = true;
@@ -131,8 +131,51 @@ void makeConnections(vector<connection> &connections, SkipList<string> *&list)
     }
 }
 
-// template<class T>
-// SkipList<T>*
+template <class T>
+SkipList<T> *findRoute(SkipList<T> *list, vector<T> wantedTowns)
+{
+    list->resetIterator();
+    SkipList<T> *route = new SkipList<T>;
+    // route->pushBack(*(list->begin()));
+
+    int i = 0;
+    while (list->getIterator() != list->end())
+    {
+        route->pushBack(*(list->getIterator()));
+        if (i >= wantedTowns.size())
+        {
+            (list->getIterator())++;
+            continue;
+        }
+
+        if (*(list->getIterator().next()) == wantedTowns[i])
+        {
+            while (*list->getIterator() != wantedTowns[i])
+            {
+                (list->getIterator())++;
+            }
+            i++;
+        }
+        else if (*(list->getIterator()) == wantedTowns[i])
+        {
+            i++;
+            if (*(list->getIterator().next()) == wantedTowns[i])
+            {
+                while (*list->getIterator() != wantedTowns[i] && list->getIterator() != list->end())
+                {
+                    (list->getIterator())++;
+                }
+                i++;
+            }
+        }
+        else
+        {
+            (list->getIterator())++;
+        }
+    }
+
+    return route;
+}
 
 int main()
 {
@@ -148,11 +191,12 @@ int main()
 
     size_t numberOfWantedTowns = 0;
     cout << "Please enter number of wanted towns\n";
+    cin >> numberOfTowns;
     vector<string> wantedTowns = getTowns(numberOfTowns);
+    SkipList<string> *route = findRoute(list, wantedTowns);
+    route->printList();
 
-    // read the wanted towns to visit
-    // print the match
-
+    delete route;
     delete list;
     return 0;
 }
@@ -165,3 +209,7 @@ int main()
 // Dimitrovgrad NovaZagora
 // StaraZagora Yambol
 // NovaZagora Burgas
+// 3
+// Plovdiv StaraZagora Yambol
+
+// Output: Sofia Plovdiv Dimitrovgrad StaraZagora Yambol Karnobat Burgas
