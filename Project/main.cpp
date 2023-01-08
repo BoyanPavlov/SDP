@@ -26,6 +26,7 @@ bool isStringValid(const string &input)
 vector<string> getTowns(size_t numberOfTowns)
 {
     vector<string> towns;
+    towns.resize(9);
 
     cout << "Please entere the sequens of towns \n: ";
     bool notValidTown = true;
@@ -57,6 +58,7 @@ vector<connection> readConnections()
     size_t numberOfConnections = 0;
     cout << "Please enter the number of the direct connections: ";
     cin >> numberOfConnections;
+    connections.resize(numberOfConnections);
 
     for (size_t i = 0; i < numberOfConnections; i++)
     {
@@ -66,7 +68,7 @@ vector<connection> readConnections()
 }
 
 template <class T>
-SkipList<T> *createSkipList(vector<string> &towns, vector<connection> &connections)
+SkipList<T> *createSkipList(vector<T> &towns)
 {
     SkipList<T> *list = new SkipList<T>;
 
@@ -75,14 +77,58 @@ SkipList<T> *createSkipList(vector<string> &towns, vector<connection> &connectio
         list->pushBack(towns[i]);
     }
 
-    for (size_t i = 0; i < towns.size(); i++)
-    {
-        for (size_t j = 0; j < connections.size(); j++)
-        {
-        }
-    }
-
     return list;
+}
+
+// template <class T>
+// typename SkipList<T>::Iterator checkIfExists(SkipList<T> *list, const T &town)
+// {
+//     list->resetIterator();
+//     while (list->getIterator() != list->end())
+//     {
+//         if (*(list->getIterator()) == town)
+//         {
+//             return Iterator(list->getIterator());
+//         }
+//         (list->getIterator())++;
+//     }
+//
+//     return SkipList<T>::Iterator(nullptr);
+// }
+
+template <class T>
+SkipListNode<T> *getNode(SkipList<T> *list, const T &town)
+{
+    list->resetIterator();
+    while (list->getIterator() != list->end())
+    {
+        if (*(list->getIterator()) == town)
+        {
+            return list->getIterator().getNode();
+        }
+        (list->getIterator())++;
+    }
+    return nullptr;
+}
+
+void makeConnections(vector<connection> &connections, SkipList<string> *&list)
+{
+    list->resetIterator();
+
+    while (list->getIterator() != list->end())
+    {
+        for (int i = 0; i < connections.size(); i++)
+        {
+            SkipListNode<string> *toChange = getNode(list, connections[i].first);
+            SkipListNode<string> *toAdd = getNode(list, connections[i].second);
+            if (toChange)
+            {
+                toChange->jumpNode = toAdd;
+            }
+        }
+
+        (list->getIterator())++;
+    }
 }
 
 int main()
@@ -93,9 +139,23 @@ int main()
     cin >> numberOfTowns;
 
     vector<string> towns = getTowns(numberOfTowns);
+    SkipList<string> *list = createSkipList(towns);
     vector<connection> connections = readConnections();
+    makeConnections(connections, list);
 
-    SkipList<string> *list = createSkipList(towns, connections);
+    // make connections
+    // read the wanted towns to visit
+    // print the match
 
+    delete list;
     return 0;
 }
+
+// 9
+// Sofia Pazardzhik Plovdiv Dimitrovgrad StaraZagora NovaZagora Yambol Karnobat Burgas
+// 5
+// Sofia Plovdiv
+// Plovdiv NovaZagora
+// Dimitrovgrad NovaZagora
+// StaraZagora Yambol
+// NovaZagora Burgas

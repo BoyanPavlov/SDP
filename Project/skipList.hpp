@@ -6,34 +6,35 @@
 // github (Link lists) and modified as skipList
 
 template <class T>
+struct SkipListNode
+{
+    T data;
+    SkipListNode *next;
+    SkipListNode *jumpNode;
+    SkipListNode(const T &elem, SkipListNode *n, SkipListNode *jN = nullptr)
+        : data(elem), next(n), jumpNode(jN) {}
+};
+
+template <class T>
 class SkipList
 {
 private:
-    struct SkipListNode
-    {
-        T data;
-        SkipListNode *next;
-        SkipListNode *jumpNode;
-        SkipListNode(const T &elem, SkipListNode *n, SkipListNode *jN = nullptr)
-            : data(elem), next(n), jumpNode(jN) {}
-    };
-
     void free();
     void copy(const SkipList<T> &);
 
-    SkipListNode *head;
-    SkipListNode *tail;
+    SkipListNode<T> *head;
+    SkipListNode<T> *tail;
     size_t sizeOfList;
 
 public:
     class Iterator
     {
     private:
-        SkipListNode *currentNode;
+        SkipListNode<T> *currentNode;
 
         // constr in private so - if we make friends with SkipList
         // - only SkipList can call the iterator
-        Iterator(SkipListNode *arg)
+        Iterator(SkipListNode<T> *arg)
             : currentNode(arg) {}
 
     public:
@@ -47,11 +48,9 @@ public:
             return *this;
         }
 
-        Iterator operator++(int)
+        Iterator &operator++(int)
         {
-            Iterator temp = *this;
-            ++(*this);
-            return temp;
+            return ++(*this);
         }
 
         T &operator*()
@@ -79,10 +78,20 @@ public:
             return Iterator(currentNode->jumpNode);
         }
 
-        // I think this is NOT okay ... idk
-        void addJumpingNode(Iterator *&jNode)
+        // Don't need that anymore
+        //  void addJumpingNode(const SkipListNode<T> *jNode)
+        //  {
+        //      this->currentNode->jumpNode = jNode;
+        //  }
+
+        SkipListNode<T> *&getNode()
         {
-            this->currentNode->next = jNode->currentNode;
+            return currentNode;
+        }
+
+        const SkipListNode<T> *&getNode() const
+        {
+            return currentNode;
         }
 
         friend class SkipList;
@@ -91,11 +100,11 @@ public:
     class ConstIterator
     {
     private:
-        const SkipListNode *currentNode;
+        const SkipListNode<T> *currentNode;
 
         // constr in private so - if we make friends with SkipList
         // - only SkipList can call the iterator
-        ConstIterator(SkipListNode *arg)
+        ConstIterator(SkipListNode<T> *arg)
             : currentNode(arg) {}
 
     public:
@@ -109,7 +118,7 @@ public:
             return *this;
         }
 
-        ConstIterator operator++(int)
+        ConstIterator &operator++(int)
         {
             Iterator temp = *this;
             ++(*this);
@@ -141,6 +150,16 @@ public:
             return ConstIterator(currentNode->jumpNode);
         }
 
+        SkipListNode<T> *&getNode()
+        {
+            return currentNode;
+        }
+
+        const SkipListNode<T> *&getNode() const
+        {
+            return currentNode;
+        }
+
         friend class SkipList;
     };
 
@@ -168,6 +187,26 @@ public:
     size_t size() const;
 
     ~SkipList();
+
+    // bool resetIterator()
+    // {
+    //     return it = this->begin();
+    // }
+
+    void resetIterator()
+    {
+        it = this->begin();
+    }
+
+    Iterator getIterator()
+    {
+        return it;
+    }
+
+    ConstIterator getConstIterator()
+    {
+        return c_it;
+    }
 
     Iterator begin()
     {
@@ -198,18 +237,22 @@ public:
     {
         return ConstIterator(nullptr);
     }
+
+private:
+    Iterator it;
+    ConstIterator c_it;
 };
 
 template <class T>
 SkipList<T>::SkipList()
-    : head{nullptr}, tail{nullptr}, sizeOfList{0} {}
+    : head{nullptr}, tail{nullptr}, sizeOfList{0}, it(head), c_it(head) {}
 
 template <class T>
 void SkipList<T>::free()
 {
     while (head)
     {
-        SkipListNode *toDelete = head;
+        SkipListNode<T> *toDelete = head;
         head = head->next;
         delete toDelete;
     }
@@ -226,7 +269,7 @@ void SkipList<T>::copy(const SkipList<T> &other)
         throw std::logic_error("Our list is not empty\n");
     }
 
-    SkipListNode *iter = other.head;
+    SkipListNode<T> *iter = other.head;
     while (iter)
     {
         pushBack(iter->data);
@@ -285,7 +328,7 @@ SkipList<T> &SkipList<T>::operator=(SkipList<T> &&other)
 template <class T>
 void SkipList<T>::pushBack(const T &elem)
 {
-    SkipListNode *toInsert = new SkipListNode(elem);
+    SkipListNode<T> *toInsert = new SkipListNode<T>(elem, tail);
     ++sizeOfList;
 
     if (empty())
@@ -296,6 +339,7 @@ void SkipList<T>::pushBack(const T &elem)
     {
         tail->next = toInsert;
         tail = toInsert;
+        tail->next = nullptr;
     }
 }
 
@@ -315,7 +359,7 @@ void SkipList<T>::popBack()
     }
     else
     {
-        SkipListNode *newTail = head;
+        SkipListNode<T> *newTail = head;
 
         // O(n) за n дължината на свързания списък
         while (newTail->next != tail)
@@ -332,7 +376,7 @@ void SkipList<T>::popBack()
 template <class T>
 void SkipList<T>::pushFront(const T &elem)
 {
-    SkipListNode *toInsert = new SkipListNode(elem, head);
+    SkipListNode<T> *toInsert = new SkipListNode(elem, head);
 
     if (empty())
     {
@@ -359,7 +403,7 @@ void SkipList<T>::popFront()
     }
     else
     {
-        SkipListNode *toDelete = head;
+        SkipListNode<T> *toDelete = head;
         head = head->next;
         delete toDelete;
     }

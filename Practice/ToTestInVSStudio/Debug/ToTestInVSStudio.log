@@ -1,2 +1,8 @@
-﻿  polish_and_product.cpp
+﻿  main.cpp
+C:\Users\boian\source\Data_structures_and_algorithms\SDP\Project\main.cpp(16,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\boian\source\Data_structures_and_algorithms\SDP\Project\main.cpp(34,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\boian\source\Data_structures_and_algorithms\SDP\Project\main.cpp(120,27): warning C4018: '<': signed/unsigned mismatch
+C:\Users\boian\source\Data_structures_and_algorithms\SDP\Project\main.cpp(75,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\boian\source\Data_structures_and_algorithms\SDP\Project\main.cpp(142): message : see reference to function template instantiation 'SkipList<std::string> *createSkipList<std::string>(std::vector<std::string,std::allocator<std::string>> &)' being compiled
+C:\Users\boian\source\Data_structures_and_algorithms\SDP\Project\skipList.hpp(55): warning C4172: returning address of local variable or temporary: temp
   ToTestInVSStudio.vcxproj -> C:\Users\boian\source\Data_structures_and_algorithms\SDP\Practice\ToTestInVSStudio\Debug\ToTestInVSStudio.exe
