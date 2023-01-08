@@ -106,7 +106,7 @@ SkipListNode<T> *getNode(SkipList<T> *list, const T &town)
         {
             return list->getIterator().getNode();
         }
-        (list->getIterator())++;
+        ++(list->getIterator());
     }
     return nullptr;
 }
@@ -131,6 +131,9 @@ void makeConnections(vector<connection> &connections, SkipList<string> *&list)
     }
 }
 
+// template<class T>
+// SkipList<T>*
+
 int main()
 {
     size_t numberOfTowns = 0;
@@ -143,7 +146,10 @@ int main()
     vector<connection> connections = readConnections();
     makeConnections(connections, list);
 
-    // make connections
+    size_t numberOfWantedTowns = 0;
+    cout << "Please enter number of wanted towns\n";
+    vector<string> wantedTowns = getTowns(numberOfTowns);
+
     // read the wanted towns to visit
     // print the match
 

@@ -50,7 +50,9 @@ public:
 
         Iterator &operator++(int)
         {
-            return ++(*this);
+            Iterator temp = *this;
+            ++(*this);
+            return temp;
         }
 
         T &operator*()
@@ -76,78 +78,6 @@ public:
         const Iterator next() const
         {
             return Iterator(currentNode->jumpNode);
-        }
-
-        // Don't need that anymore
-        //  void addJumpingNode(const SkipListNode<T> *jNode)
-        //  {
-        //      this->currentNode->jumpNode = jNode;
-        //  }
-
-        SkipListNode<T> *&getNode()
-        {
-            return currentNode;
-        }
-
-        const SkipListNode<T> *&getNode() const
-        {
-            return currentNode;
-        }
-
-        friend class SkipList;
-    };
-
-    class ConstIterator
-    {
-    private:
-        const SkipListNode<T> *currentNode;
-
-        // constr in private so - if we make friends with SkipList
-        // - only SkipList can call the iterator
-        ConstIterator(SkipListNode<T> *arg)
-            : currentNode(arg) {}
-
-    public:
-        ConstIterator &operator++()
-        {
-            if (currentNode == nullptr)
-            {
-                return *this;
-            }
-            currentNode = currentNode->next;
-            return *this;
-        }
-
-        ConstIterator &operator++(int)
-        {
-            Iterator temp = *this;
-            ++(*this);
-            return temp;
-        }
-
-        T &operator*()
-        {
-            return currentNode->data;
-        }
-
-        const T &operator*() const
-        {
-            return currentNode->data;
-        }
-
-        bool operator==(const ConstIterator &other) const
-        {
-            return other.currentNode == currentNode;
-        }
-
-        bool operator!=(const ConstIterator &other) const
-        {
-            return !(*this == other);
-        }
-
-        const ConstIterator next() const
-        {
-            return ConstIterator(currentNode->jumpNode);
         }
 
         SkipListNode<T> *&getNode()
@@ -198,14 +128,14 @@ public:
         it = this->begin();
     }
 
-    Iterator getIterator()
+    Iterator &getIterator()
     {
         return it;
     }
 
-    ConstIterator getConstIterator()
+    const Iterator& getIterator()const
     {
-        return c_it;
+        return it;
     }
 
     Iterator begin()
@@ -218,34 +148,13 @@ public:
         return Iterator(nullptr);
     }
 
-    ConstIterator begin() const
-    {
-        return ConstIterator(head);
-    }
-
-    ConstIterator end() const
-    {
-        return ConstIterator(nullptr);
-    }
-
-    ConstIterator cbegin() const
-    {
-        return ConstIterator(head);
-    }
-
-    ConstIterator cend() const
-    {
-        return ConstIterator(nullptr);
-    }
-
 private:
     Iterator it;
-    ConstIterator c_it;
 };
 
 template <class T>
 SkipList<T>::SkipList()
-    : head{nullptr}, tail{nullptr}, sizeOfList{0}, it(head), c_it(head) {}
+    : head{nullptr}, tail{nullptr}, sizeOfList{0}, it(head) {}
 
 template <class T>
 void SkipList<T>::free()
@@ -262,8 +171,6 @@ void SkipList<T>::free()
 template <class T>
 void SkipList<T>::copy(const SkipList<T> &other)
 {
-    // free();
-    //  we are expecting that our list is empty
     if (!empty())
     {
         throw std::logic_error("Our list is not empty\n");
