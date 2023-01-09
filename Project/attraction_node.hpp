@@ -130,19 +130,113 @@ vector<Attrcation_node> makeAttrConnections(vector<string> &obj, vector<attr_con
     return attractions;
 }
 
-SkipList<string> *findSequenceHelper()
+void findMinSpanningTree(Attrcation_node start, Attrcation_node &end,
+                         vector<Attrcation_node> &attrcations,
+                         size_t curr_time, size_t max_time,
+                         vector<string> n_sequence)
 {
+    // int index = getIndexOfAttraction(attrcations, start.nameOfAttr);
+    if (start.nameOfAttr == end.nameOfAttr)
+    {
+        // return n_sequence;
+        return;
+    }
+
+    for (size_t i = 0; i < start.otherObj.size(); i++)
+    {
+        int tempTime = curr_time + start.otherObj[i].second;
+        if (tempTime >= max_time)
+        {
+            return;
+        }
+        n_sequence.push_back(start.otherObj[i].first);
+        int pos = getIndexOfAttraction(attrcations, start.otherObj[i].first);
+        findMinSpanningTree(attrcations[i], end, attrcations, tempTime, max_time, n_sequence);
+    }
 }
 
-void findSequence(vector<Attrcation_node> &attractions, size_t minutes)
+
+void findSequenceHelper(vector<string> sequence,
+                        vector<Attrcation_node> &attractions,
+                        vector<bool> visited, size_t currTime, size_t minutes, size_t &max)
 {
-    size_t maxObj = 1;
+    string last = sequence.back();
+    int index = getIndexOfAttraction(attractions, last);
+    visited[index] = true;
+    Attrcation_node currNode = attractions[index];
+
+    int vis_index = -1;
+
+    for (size_t i = 0; i < currNode.otherObj.size(); i++)
+    {
+        vis_index = getIndexOfAttraction(attractions, currNode.otherObj[i].first);
+        int tempTime = currTime + currNode.otherObj[i].second;
+
+        // Railstation RomanStadium DzhumayaSquare ArtGallery AntiqueTheatre ArtGallery Railstation
+        if (tempTime >= minutes)
+        {
+            return;
+        }
+
+        if (!visited[vis_index])
+        {
+            sequence.push_back(currNode.otherObj[i].first);
+            currTime = tempTime;
+            findSequenceHelper(sequence, attractions, visited, currTime, minutes, max);
+        }
+
+        if (currNode.otherObj[i].first == sequence[0])
+        {
+            sequence.push_back(currNode.otherObj[i].first);
+            return;
+        }
+
+        if (*sequence.begin() == *sequence.end())
+        {
+            max = sequence.size();
+            return;
+        }
+    }
+}
+
+vector<string> findSequence(vector<Attrcation_node> &attractions, size_t minutes)
+{
+    size_t maxObj = 0;
     size_t currMax = 1;
     size_t takenTime = 0;
 
     vector<string> sequence;
+    vector<bool> visited;
+    visited.resize(attractions.size());
+
+    sequence.push_back(attractions[0].nameOfAttr);
+
+    
+
+    while (currMax > maxObj)
+    {
+        maxObj = currMax;
+        findSequenceHelper(sequence, attractions, visited, takenTime, minutes, currMax);
+    }
+
+    return sequence;
 }
 
+void modifyAttractions(vector<Attrcation_node> &attractions)
+{
+    string start = "Railstation";
+    for (size_t i = 0; i < attractions.size(); i++)
+    {
+        for (size_t j = 0; j < attractions[i].otherObj.size(); j++)
+        {
+            if (attractions[i].otherObj[j].first == start)
+            {
+                std::swap(attractions[i].otherObj[j],
+                          attractions[i].otherObj[attractions[i].otherObj.size() - 1]);
+            }
+        }
+    }
+}
 SkipList<string> *getSequenceOfAttractions(vector<string> &obj, vector<attr_connection> &conn, size_t minutes)
 {
     vector<Attrcation_node> attractions = makeAttrConnections(obj, conn);
@@ -168,7 +262,7 @@ SkipList<string> *getSequenceOfAttractions(vector<string> &obj, vector<attr_conn
     {
         return sequence;
     }
-
+    modifyAttractions(attractions);
     findSequence(attractions, minutes);
     return sequence;
 }
