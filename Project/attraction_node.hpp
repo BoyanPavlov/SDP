@@ -133,12 +133,17 @@ vector<Attrcation_node> makeAttrConnections(vector<string> &obj, vector<attr_con
 void findMinSpanningTree(Attrcation_node start, Attrcation_node &end,
                          vector<Attrcation_node> &attrcations,
                          size_t curr_time, size_t max_time,
-                         vector<string> n_sequence)
+                         vector<string> n_sequence, vector<string> &real, bool &changed)
 {
     // int index = getIndexOfAttraction(attrcations, start.nameOfAttr);
     if (start.nameOfAttr == end.nameOfAttr)
     {
-        // return n_sequence;
+        n_sequence.push_back(start.nameOfAttr);
+        if (!changed)
+        {
+            changed = true;
+            real = n_sequence;
+        }
         return;
     }
 
@@ -151,10 +156,9 @@ void findMinSpanningTree(Attrcation_node start, Attrcation_node &end,
         }
         n_sequence.push_back(start.otherObj[i].first);
         int pos = getIndexOfAttraction(attrcations, start.otherObj[i].first);
-        findMinSpanningTree(attrcations[i], end, attrcations, tempTime, max_time, n_sequence);
+        findMinSpanningTree(attrcations[i], end, attrcations, tempTime, max_time, n_sequence, real, changed);
     }
 }
-
 
 void findSequenceHelper(vector<string> sequence,
                         vector<Attrcation_node> &attractions,
@@ -196,6 +200,8 @@ void findSequenceHelper(vector<string> sequence,
             max = sequence.size();
             return;
         }
+
+        
     }
 }
 
@@ -211,7 +217,19 @@ vector<string> findSequence(vector<Attrcation_node> &attractions, size_t minutes
 
     sequence.push_back(attractions[0].nameOfAttr);
 
-    
+    // TO DELETE
+    // Railstation RomanStadium DzhumayaSquare ArtGallery AntiqueTheatre ArtGallery Railstation
+    int startIn = getIndexOfAttraction(attractions, "AntiqueTheatre");
+    int endIn = getIndexOfAttraction(attractions, "Railstation");
+
+    vector<string> shit;
+    vector<string> real;
+    bool salam = false;
+
+    findMinSpanningTree(attractions[startIn], attractions[endIn],
+                        attractions, 34, minutes, shit, real, salam);
+
+    // TO DELETE
 
     while (currMax > maxObj)
     {
