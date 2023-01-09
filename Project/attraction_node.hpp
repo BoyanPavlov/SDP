@@ -200,8 +200,6 @@ void findSequenceHelper(vector<string> sequence,
             max = sequence.size();
             return;
         }
-
-        
     }
 }
 
@@ -223,11 +221,10 @@ vector<string> findSequence(vector<Attrcation_node> &attractions, size_t minutes
     int endIn = getIndexOfAttraction(attractions, "Railstation");
 
     vector<string> shit;
-    vector<string> real;
     bool salam = false;
 
     findMinSpanningTree(attractions[startIn], attractions[endIn],
-                        attractions, 34, minutes, shit, real, salam);
+                        attractions, 34, minutes, shit, shit, salam);
 
     // TO DELETE
 
