@@ -59,7 +59,7 @@ size_t extractNumber(const string &str)
 
 void extractInfo(std::ifstream &in, size_t &k, size_t &r, vector<attr_connection> &attr_con, size_t &min)
 {
-    r = -1;
+    r = -1; // overflow in order for max element
     bool flag_k = true;
     bool flag_r = true;
     bool flag_attr_con = true;
@@ -118,7 +118,7 @@ void extractInfo(std::ifstream &in, size_t &k, size_t &r, vector<attr_connection
     }
 }
 
-void printSALAM(vector<attr_connection> &attr_con)
+void printAttrConnections(vector<attr_connection> &attr_con)
 {
     for (int i = 0; i < attr_con.size(); i++)
     {
@@ -138,15 +138,69 @@ void readFile(const string &path,
         {
             throw std::runtime_error("Couldn't open the file\n");
         }
+
+        // cout << "File: " << path << " has opened successfully!\n";
+        // cout << "...\n";
+        // cout << "Loading elements\n";
+
         extractInfo(in, k, r, attr_con, min);
-        cout << k << " " << r << '\n';
-        printSALAM(attr_con);
-        cout << min << '\n';
+
+        // cout << k << " " << r << '\n';
+        // printAttrConnections(attr_con);
+        // cout << min << '\n';
+        // cout << "This is what was read from file as info\n";
     }
     else
     {
         throw std::runtime_error("File doesn't exist\n");
     }
+}
+
+vector<string> extractAttractionObj(vector<attr_connection> &attr_con, size_t numOfObj)
+{
+    vector<string> attractions;
+    bool flag_elem1_found = false;
+    bool flag_elem2_found = false;
+    for (size_t i = 0; i < attr_con.size(); i++)
+    {
+        flag_elem1_found = false;
+        flag_elem2_found = false;
+
+        for (size_t j = 0; j < attractions.size(); j++)
+        {
+            if (attractions[j] == attr_con[i].first.first)
+            {
+                flag_elem1_found = true;
+            }
+            else if (attractions[j] == attr_con[i].first.second)
+            {
+                flag_elem2_found = true;
+            }
+
+            if (flag_elem1_found && flag_elem2_found)
+            {
+                break;
+            }
+        }
+
+        if (!flag_elem1_found)
+        {
+            attractions.push_back(attr_con[i].first.first);
+        }
+
+        if (!flag_elem2_found)
+        {
+            attractions.push_back(attr_con[i].first.second);
+        }
+
+    }
+
+    if (attractions.size() != numOfObj)
+    {
+        throw std::runtime_error("Error in logic - couldn't extract all attractions");
+    }
+
+    return attractions;
 }
 
 SkipList<string> *processFile(const string &path)
@@ -158,6 +212,9 @@ SkipList<string> *processFile(const string &path)
     size_t minutes = 0;
     vector<attr_connection> attr_con;
     readFile(path, k, r, attr_con, minutes);
+
+    vector<string> attractions = extractAttractionObj(attr_con, k);
+    
 }
 
 #endif // _FILE_PROCESSING_HPP_
