@@ -17,6 +17,7 @@
         "xtr1common": "cpp",
         "xutility": "cpp",
         "iosfwd": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "chrono": "cpp"
     }
 }

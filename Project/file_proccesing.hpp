@@ -3,6 +3,8 @@
 #include <vector>
 #include "skipList.hpp"
 
+#include "attraction_node.hpp"
+
 #include <fstream>
 
 using std::cin;
@@ -192,7 +194,6 @@ vector<string> extractAttractionObj(vector<attr_connection> &attr_con, size_t nu
         {
             attractions.push_back(attr_con[i].first.second);
         }
-
     }
 
     if (attractions.size() != numOfObj)
@@ -203,6 +204,7 @@ vector<string> extractAttractionObj(vector<attr_connection> &attr_con, size_t nu
     return attractions;
 }
 
+// main function here
 SkipList<string> *processFile(const string &path)
 {
     // number of objects
@@ -214,7 +216,10 @@ SkipList<string> *processFile(const string &path)
     readFile(path, k, r, attr_con, minutes);
 
     vector<string> attractions = extractAttractionObj(attr_con, k);
-    
+
+    SkipList<string> *attr_route = getSequenceOfAttractions(attractions, attr_con);
+
+    return attr_route;
 }
 
 #endif // _FILE_PROCESSING_HPP_
