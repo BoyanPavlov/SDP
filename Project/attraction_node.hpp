@@ -130,10 +130,10 @@ vector<Attrcation_node> makeAttrConnections(vector<string> &obj, vector<attr_con
     return attractions;
 }
 
-void findMinSpanningTree(Attrcation_node start, Attrcation_node &end,
-                         vector<Attrcation_node> &attrcations,
-                         size_t curr_time, size_t max_time,
-                         vector<string> n_sequence, vector<string> &real, bool &changed)
+void findShortestPath(Attrcation_node start, Attrcation_node &end,
+                      vector<Attrcation_node> &attrcations,
+                      size_t curr_time, size_t max_time,
+                      vector<string> n_sequence, vector<string> &real, bool &changed)
 {
     // int index = getIndexOfAttraction(attrcations, start.nameOfAttr);
     if (start.nameOfAttr == end.nameOfAttr)
@@ -156,13 +156,13 @@ void findMinSpanningTree(Attrcation_node start, Attrcation_node &end,
         }
         n_sequence.push_back(start.otherObj[i].first);
         int pos = getIndexOfAttraction(attrcations, start.otherObj[i].first);
-        findMinSpanningTree(attrcations[i], end, attrcations, tempTime, max_time, n_sequence, real, changed);
+        findShortestPath(attrcations[i], end, attrcations, tempTime, max_time, n_sequence, real, changed);
     }
 }
 
-void findSequenceHelper(vector<string> sequence,
+void findSequenceHelper(vector<string> sequence, vector<string> &real,
                         vector<Attrcation_node> &attractions,
-                        vector<bool> visited, size_t currTime, size_t minutes, size_t &max)
+                        vector<bool> visited, size_t currTime, size_t minutes, size_t &max, bool changed)
 {
     string last = sequence.back();
     int index = getIndexOfAttraction(attractions, last);
@@ -186,7 +186,7 @@ void findSequenceHelper(vector<string> sequence,
         {
             sequence.push_back(currNode.otherObj[i].first);
             currTime = tempTime;
-            findSequenceHelper(sequence, attractions, visited, currTime, minutes, max);
+            findSequenceHelper(sequence, sequence, attractions, visited, currTime, minutes, max, changed);
         }
 
         if (currNode.otherObj[i].first == sequence[0])
@@ -198,6 +198,27 @@ void findSequenceHelper(vector<string> sequence,
         if (*sequence.begin() == *sequence.end())
         {
             max = sequence.size();
+            return;
+        }
+
+        if (tempTime >= minutes / 2)
+        {
+            bool flag = false;
+            vector<string> toAppend;
+            int startI = getIndexOfAttraction(attractions, sequence.back());
+            int endI = getIndexOfAttraction(attractions, sequence[0]);
+            findShortestPath(attractions[startI], attractions[endI], attractions,
+                             tempTime, minutes, toAppend, toAppend, flag);
+
+            for (size_t k = 0; k < toAppend.size(); k++)
+            {
+                sequence.push_back(toAppend[k]);
+            }
+            if (!changed)
+            {
+                real = sequence;
+            }
+
             return;
         }
     }
@@ -215,23 +236,11 @@ vector<string> findSequence(vector<Attrcation_node> &attractions, size_t minutes
 
     sequence.push_back(attractions[0].nameOfAttr);
 
-    // TO DELETE
-    // Railstation RomanStadium DzhumayaSquare ArtGallery AntiqueTheatre ArtGallery Railstation
-    int startIn = getIndexOfAttraction(attractions, "AntiqueTheatre");
-    int endIn = getIndexOfAttraction(attractions, "Railstation");
-
-    vector<string> shit;
-    bool salam = false;
-
-    findMinSpanningTree(attractions[startIn], attractions[endIn],
-                        attractions, 34, minutes, shit, shit, salam);
-
-    // TO DELETE
-
+    bool flag = false;
     while (currMax > maxObj)
     {
         maxObj = currMax;
-        findSequenceHelper(sequence, attractions, visited, takenTime, minutes, currMax);
+        findSequenceHelper(sequence, sequence, attractions, visited, takenTime, minutes, currMax, flag);
     }
 
     return sequence;
