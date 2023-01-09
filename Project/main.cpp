@@ -3,6 +3,7 @@
 #include <vector>
 #include "skipList.hpp"
 #include "route_towns.hpp"
+#include "file_proccesing.hpp"
 
 using std::cin;
 using std::cout;
@@ -14,13 +15,17 @@ using connection = std::pair<string, string>;
 
 int main()
 {
-    SkipList<string> *route = getWantedTowns();
-    route->printList();
-    // startig B)
+    // A)
 
+    // SkipList<string> *route = getWantedTowns();
+    // route->printList();
 
+    // B)
 
-    delete route;
+    string Pl = "Plovdiv.txt";
+    SkipList<string> *attractions = processFile(Pl);
+
+    // delete route;
     return 0;
 }
 

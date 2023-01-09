@@ -12,6 +12,7 @@ using std::string;
 using std::vector;
 
 using connection = std::pair<string, string>;
+using attr_connection = std::pair<connection, size_t>;
 
 #ifndef _FILE_PROCESSING_HPP_
 #define _FILE_PROCESSING_HPP_
@@ -34,7 +35,101 @@ bool checkFileIsValid(const string &path)
     return true;
 }
 
-void readFile(const string &path)
+bool checkIsLetter(const string &str)
+{
+    for (int i = 0; i < str.size(); i++)
+    {
+        if (!(str[i] >= 'A' && str[i] <= 'Z' || str[i] >= 'a' && str[i] <= 'z'))
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+size_t extractNumber(const string &str)
+{
+    size_t num = 0;
+    for (int i = 0; i < str.size(); i++)
+    {
+        num = num * 10 + (str[i] - '0');
+    }
+    return num;
+}
+
+void extractInfo(std::ifstream &in, size_t &k, size_t &r, vector<attr_connection> &attr_con, size_t &min)
+{
+    r = -1;
+    bool flag_k = true;
+    bool flag_r = true;
+    bool flag_attr_con = true;
+    int counter = 0;
+    int pair_counter = 0;
+    while (!in.eof())
+    {
+        string buffer;
+        in >> buffer;
+
+        if (flag_k && !checkIsLetter(buffer))
+        {
+            k = extractNumber(buffer);
+            flag_k = false;
+            continue;
+        }
+
+        if (flag_r && !checkIsLetter(buffer))
+        {
+            r = extractNumber(buffer);
+            flag_r = false;
+            attr_con.resize(r);
+            continue;
+        }
+
+        if (flag_attr_con && counter != r)
+        {
+            if (pair_counter == 0)
+            {
+                attr_con[counter].first.first = buffer;
+                pair_counter++;
+                continue;
+            }
+
+            if (pair_counter == 1)
+            {
+                attr_con[counter].first.second = buffer;
+                pair_counter++;
+                continue;
+            }
+
+            if (!checkIsLetter(buffer) && pair_counter == 2)
+            {
+                attr_con[counter].second = extractNumber(buffer);
+                pair_counter = 0;
+            }
+
+            counter++;
+            continue;
+        }
+
+        if (counter == r)
+        {
+            min = extractNumber(buffer);
+        }
+    }
+}
+
+void printSALAM(vector<attr_connection> &attr_con)
+{
+    for (int i = 0; i < attr_con.size(); i++)
+    {
+        cout << attr_con[i].first.first << " "
+             << attr_con[i].first.second << " "
+             << attr_con[i].second << "\n";
+    }
+}
+
+void readFile(const string &path,
+              size_t &k, size_t &r, vector<attr_connection> &attr_con, size_t &min)
 {
     if (checkFileIsValid(path))
     {
@@ -43,6 +138,10 @@ void readFile(const string &path)
         {
             throw std::runtime_error("Couldn't open the file\n");
         }
+        extractInfo(in, k, r, attr_con, min);
+        cout << k << " " << r << '\n';
+        printSALAM(attr_con);
+        cout << min << '\n';
     }
     else
     {
@@ -50,10 +149,15 @@ void readFile(const string &path)
     }
 }
 
-template <class T>
-SkipList<T> processFile(const string &path)
+SkipList<string> *processFile(const string &path)
 {
-    
+    // number of objects
+    size_t k = 0;
+    // number of connections
+    size_t r = 0;
+    size_t minutes = 0;
+    vector<attr_connection> attr_con;
+    readFile(path, k, r, attr_con, minutes);
 }
 
 #endif // _FILE_PROCESSING_HPP_
