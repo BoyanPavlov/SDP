@@ -217,7 +217,7 @@ SkipList<string> *processFile(const string &path)
 
     vector<string> attractions = extractAttractionObj(attr_con, k);
 
-    SkipList<string> *attr_route = getSequenceOfAttractions(attractions, attr_con);
+    SkipList<string> *attr_route = getSequenceOfAttractions(attractions, attr_con, minutes);
 
     return attr_route;
 }

@@ -145,6 +145,16 @@ public:
         return Iterator(head);
     }
 
+    Iterator last()
+    {
+        resetIterator();
+        while (it.currentNode->next != nullptr)
+        {
+            it.currentNode = it.currentNode->next;
+        }
+        return Iterator(it);
+    }
+
     Iterator end()
     {
         return Iterator(nullptr);

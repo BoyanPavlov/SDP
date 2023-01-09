@@ -18,6 +18,18 @@
         "xutility": "cpp",
         "iosfwd": "cpp",
         "utility": "cpp",
-        "chrono": "cpp"
+        "chrono": "cpp",
+        "atomic": "cpp",
+        "cmath": "cpp",
+        "deque": "cpp",
+        "fstream": "cpp",
+        "istream": "cpp",
+        "limits": "cpp",
+        "memory": "cpp",
+        "numeric": "cpp",
+        "ostream": "cpp",
+        "string": "cpp",
+        "system_error": "cpp",
+        "xlocinfo": "cpp"
     }
 }

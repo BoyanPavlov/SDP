@@ -24,6 +24,20 @@ struct Attrcation_node
     Attrcation_node(const string &name) : nameOfAttr(name) {}
 };
 
+bool isObjInList(SkipList<string> *sequence, const string &str)
+{
+    sequence->resetIterator();
+    while (sequence->getIterator() != sequence->end())
+    {
+        if (*(sequence->getIterator()) == str)
+        {
+            return true;
+        }
+        ++(sequence->getIterator());
+    }
+    return false;
+}
+
 void printAttractions(vector<Attrcation_node> &arr)
 {
     for (size_t i = 0; i < arr.size(); i++)
@@ -116,11 +130,47 @@ vector<Attrcation_node> makeAttrConnections(vector<string> &obj, vector<attr_con
     return attractions;
 }
 
-SkipList<string> *getSequenceOfAttractions(vector<string> &obj, vector<attr_connection> &conn)
+SkipList<string> *findSequenceHelper()
+{
+}
+
+void findSequence(vector<Attrcation_node> &attractions, size_t minutes)
+{
+    size_t maxObj = 1;
+    size_t currMax = 1;
+    size_t takenTime = 0;
+
+    vector<string> sequence;
+}
+
+SkipList<string> *getSequenceOfAttractions(vector<string> &obj, vector<attr_connection> &conn, size_t minutes)
 {
     vector<Attrcation_node> attractions = makeAttrConnections(obj, conn);
+    string start = "Railstation";
 
-    // find the route
+    SkipList<string> *sequence = new SkipList<string>;
+    sequence->pushBack(start);
+
+    int index = getIndexOfAttraction(attractions, start);
+    bool canHaveATrip = false;
+
+    int currentCost = 0;
+    for (size_t i = 0; i < attractions[index].otherObj.size(); i++)
+    {
+        currentCost = 2 * attractions[index].otherObj[i].second;
+        if (currentCost < minutes)
+        {
+            canHaveATrip = true;
+            break;
+        }
+    }
+    if (!canHaveATrip)
+    {
+        return sequence;
+    }
+
+    findSequence(attractions, minutes);
+    return sequence;
 }
 
 #endif // _ATTRACTION_NODE_
