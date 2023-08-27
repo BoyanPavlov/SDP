@@ -17,15 +17,18 @@ int main()
 {
     // A)
 
-    // SkipList<string> *route = getWantedTowns();
-    // route->printList();
+    SkipList<string> *route = getWantedTowns();
+    route->printList();
 
     // B)
 
+    // notWorking properly ...
     string Pl = "Plovdiv.txt";
     SkipList<string> *attractions = processFile(Pl);
 
-    // delete route;
+    // C) - missing
+
+    delete route;
     return 0;
 }
 

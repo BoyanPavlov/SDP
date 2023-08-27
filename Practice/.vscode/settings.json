@@ -1,9 +1,0 @@
-{
-    "files.associations": {
-        "xlocale": "cpp",
-        "iterator": "cpp",
-        "queue": "cpp",
-        "ostream": "cpp",
-        "stdexcept": "cpp"
-    }
-}

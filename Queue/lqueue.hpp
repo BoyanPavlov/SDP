@@ -30,6 +30,11 @@ struct QueueElement
         }
         return this;
     }
+    QueueElement(T const &_data, QueueElement<DataType> *_next = nullptr)
+        : data(_data),
+          next(_next)
+    {
+    }
 };
 
 template <class DataType>
@@ -112,7 +117,7 @@ void LinkedQueue<DataType>::copy(const LinkedQueue<DataType> &other)
         QueueElement<DataType> *nextCopy = other.front->next;
         while (nextCopy)
         {
-            back->next = new QueueElement<DataType>{nextCopy->next->data, nullptr};
+            back->next = new QueueElement<DataType>{nextCopy->data, nullptr};
             back = back->next;
             nextCopy = nextCopy->next;
         }

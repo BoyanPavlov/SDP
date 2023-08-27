@@ -39,6 +39,7 @@ void printLinkedList(const LinkedListNode<T> *ll, void (*print)(T)) //??????
 
     std::cout << std::endl;
 }
+
 template <class T>
 LinkedListNode<T> *fromList(const std::initializer_list<T> &l)
 {

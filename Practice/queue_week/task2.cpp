@@ -17,10 +17,10 @@ private:
     void cleanPlayground()
     {
         for (auto &col : playground)
-        //for (std::array<bool, boardSize>&col : playground)
+        // for (std::array<bool, boardSize>&col : playground)
         {
             for (auto &pos : col)
-            //for (bool &pos : col)
+            // for (bool &pos : col)
             {
                 pos = false;
             }
@@ -99,6 +99,11 @@ public:
         cleanPlayground();
         return process(start, end);
     }
+
+    void test(unsigned int size)
+    {
+        boardSize = size;
+    }
 };
 
 int main()
@@ -114,5 +119,6 @@ int main()
     minMoves<2> mt;
 
     std::cout << mt.getMinMoves({0, 0}, {12, 212});
+
     return 0;
 }

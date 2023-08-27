@@ -133,7 +133,7 @@ vector<Attrcation_node> makeAttrConnections(vector<string> &obj, vector<attr_con
 void findShortestPath(Attrcation_node start, Attrcation_node &end,
                       vector<Attrcation_node> &attrcations,
                       size_t curr_time, size_t max_time,
-                      vector<string> n_sequence, vector<string> &real, bool &changed)
+                      vector<string> n_sequence, vector<string> &real, bool &changed, size_t &newTime)
 {
     // int index = getIndexOfAttraction(attrcations, start.nameOfAttr);
     if (start.nameOfAttr == end.nameOfAttr)
@@ -143,6 +143,7 @@ void findShortestPath(Attrcation_node start, Attrcation_node &end,
         {
             changed = true;
             real = n_sequence;
+            newTime = curr_time + start.otherObj[getIndexOfAttraction(attrcations, end.nameOfAttr)].second;
         }
         return;
     }
@@ -156,13 +157,14 @@ void findShortestPath(Attrcation_node start, Attrcation_node &end,
         }
         n_sequence.push_back(start.otherObj[i].first);
         int pos = getIndexOfAttraction(attrcations, start.otherObj[i].first);
-        findShortestPath(attrcations[i], end, attrcations, tempTime, max_time, n_sequence, real, changed);
+        findShortestPath(attrcations[i], end, attrcations, tempTime, max_time, n_sequence, real, changed, newTime);
     }
 }
 
 void findSequenceHelper(vector<string> sequence, vector<string> &real,
                         vector<Attrcation_node> &attractions,
-                        vector<bool> visited, size_t currTime, size_t minutes, size_t &max, bool changed)
+                        vector<bool> visited, size_t currTime, size_t minutes,
+                        size_t &max, bool changed)
 {
     string last = sequence.back();
     int index = getIndexOfAttraction(attractions, last);
@@ -174,7 +176,7 @@ void findSequenceHelper(vector<string> sequence, vector<string> &real,
     for (size_t i = 0; i < currNode.otherObj.size(); i++)
     {
         vis_index = getIndexOfAttraction(attractions, currNode.otherObj[i].first);
-        int tempTime = currTime + currNode.otherObj[i].second;
+        size_t tempTime = currTime + currNode.otherObj[i].second;
 
         // Railstation RomanStadium DzhumayaSquare ArtGallery AntiqueTheatre ArtGallery Railstation
         if (tempTime >= minutes)
@@ -203,12 +205,21 @@ void findSequenceHelper(vector<string> sequence, vector<string> &real,
 
         if (tempTime >= minutes / 2)
         {
+
             bool flag = false;
             vector<string> toAppend;
+            size_t newTime = tempTime;
+
             int startI = getIndexOfAttraction(attractions, sequence.back());
             int endI = getIndexOfAttraction(attractions, sequence[0]);
+
             findShortestPath(attractions[startI], attractions[endI], attractions,
-                             tempTime, minutes, toAppend, toAppend, flag);
+                             tempTime, minutes, toAppend, toAppend, flag, newTime);
+
+            if (newTime >= minutes)
+            {
+                return;
+            }
 
             for (size_t k = 0; k < toAppend.size(); k++)
             {
